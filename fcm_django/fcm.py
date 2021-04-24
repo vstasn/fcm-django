@@ -1,6 +1,14 @@
 from firebase_admin import exceptions
 from firebase_admin import messaging
 
+response_dict = {
+    'multicast_ids': [],
+    'success': 0,
+    'failure': 0,
+    'canonical_ids': 0,
+    'results': [],
+    'topic_message_id': None
+}
 
 def fcm_send_message(
     registration_id,
