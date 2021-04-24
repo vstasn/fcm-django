@@ -33,7 +33,7 @@ setup(
         "fcm_django/management/commands",
     ],
     install_requires=[
-        'pyfcm==1.4.9',
+        'firebase-admin==4.5.3',
         'Django'
     ],
     author=fcm_django.__author__,
@@ -41,8 +41,8 @@ setup(
     classifiers=CLASSIFIERS,
     description="Send push notifications to mobile devices & browsers through "
                 "FCM in Django.",
-    download_url="https://github.com/xtrinch/fcm-django/tarball/master",
+    download_url="https://github.com/vstasn/fcm-django/tarball/master",
     long_description='',
-    url="https://github.com/xtrinch/fcm-django",
+    url="https://github.com/vstasn/fcm-django",
     version=fcm_django.__version__,
 )

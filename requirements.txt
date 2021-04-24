@@ -1,1 +1,1 @@
-pyfcm==1.4.9
+firebase-admin==4.5.3
