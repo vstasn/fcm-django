@@ -187,7 +187,7 @@ def fcm_send_bulk_message(
         for response in response.responses
     ]
 
-    return responses
+    return {"results": responses}
 
 
 def fcm_send_bulk_data_messages(*args, **kwargs):
