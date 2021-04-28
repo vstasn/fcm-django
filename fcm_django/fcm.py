@@ -40,6 +40,7 @@ def fcm_send_message(
     extra_notification_kwargs=None,
     channel_id=None,
     critical=False,
+    android_priority=None,
     **kwargs
 ):
 
@@ -61,6 +62,7 @@ def fcm_send_message(
         data=data,
         token=registration_id,
         android=messaging.AndroidConfig(
+            priority=android_priority,
             collapse_key=collapse_key,
             ttl=time_to_live,
             restricted_package_name=restricted_package_name,
@@ -138,6 +140,7 @@ def fcm_send_bulk_message(
     extra_notification_kwargs=None,
     channel_id=None,
     critical=False,
+    android_priority=None,
     **kwargs
 ):
     apns_sound = sound
@@ -158,6 +161,7 @@ def fcm_send_bulk_message(
         data=data,
         tokens=registration_ids,
         android=messaging.AndroidConfig(
+            priority=android_priority,
             collapse_key=collapse_key,
             ttl=time_to_live,
             restricted_package_name=restricted_package_name,
