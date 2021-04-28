@@ -2,13 +2,14 @@ from firebase_admin import exceptions
 from firebase_admin import messaging
 
 response_dict = {
-    'multicast_ids': [],
-    'success': 0,
-    'failure': 0,
-    'canonical_ids': 0,
-    'results': [],
-    'topic_message_id': None
+    "multicast_ids": [],
+    "success": 0,
+    "failure": 0,
+    "canonical_ids": 0,
+    "results": [],
+    "topic_message_id": None,
 }
+
 
 def fcm_send_message(
     registration_id,
@@ -37,12 +38,15 @@ def fcm_send_message(
     api_key=None,
     json_encoder=None,
     extra_notification_kwargs=None,
+    channel_id=None,
+    critical=False,
     **kwargs
 ):
 
     apns_sound = sound
-    if kwargs.get("critical", False):
-        apns_sound = messaging.CriticalSound("default", critical=True)
+    if critical:
+        sound_name = sound if sound else "default"
+        apns_sound = messaging.CriticalSound(sound_name, critical=True)
 
     notification = None
     if title and body:
@@ -69,6 +73,7 @@ def fcm_send_message(
                 body_loc_args=body_loc_args,
                 title_loc_key=title_loc_key,
                 title_loc_args=title_loc_args,
+                channel_id=channel_id,
             ),
         ),
         apns=messaging.APNSConfig(
@@ -131,11 +136,14 @@ def fcm_send_bulk_message(
     api_key=None,
     json_encoder=None,
     extra_notification_kwargs=None,
+    channel_id=None,
+    critical=False,
     **kwargs
 ):
     apns_sound = sound
-    if kwargs.get("critical", False):
-        apns_sound = messaging.CriticalSound("default", critical=True)
+    if critical:
+        sound_name = sound if sound else "default"
+        apns_sound = messaging.CriticalSound(sound_name, critical=True)
 
     notification = None
     if title and body:
@@ -162,6 +170,7 @@ def fcm_send_bulk_message(
                 body_loc_args=body_loc_args,
                 title_loc_key=title_loc_key,
                 title_loc_args=title_loc_args,
+                channel_id=channel_id,
             ),
         ),
         apns=messaging.APNSConfig(
@@ -181,11 +190,14 @@ def fcm_send_bulk_message(
         ),
     )
 
-    response = messaging.send_multicast(multicast)
-    responses = [
-        {"error": response.exception, "success": response.success}
-        for response in response.responses
-    ]
+    try:
+        response = messaging.send_multicast(multicast)
+        responses = [
+            {"error": response.exception, "success": response.success}
+            for response in response.responses
+        ]
+    except exceptions.FirebaseError:
+        responses = []
 
     return {"results": responses}
 
